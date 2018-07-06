@@ -16,7 +16,7 @@ df = df.dropna(how='all')
 df = df.head(50)
 
 # These domains are frequently incorrect
-skipDomains = ['www.sec.gov', 'wwww.bloomberg.com', 'whalewisdom.com', 'www.hoovers.com', \
+skipDomains = ['webcache.googleusercontent.com', 'www.sec.gov', 'pdf.secdatabase.com', 'www.lei-lookup.com',  'www.bloomberg.com', 'whalewisdom.com', 'www.hoovers.com', \
 	'www.manta.com', 'www.yellowpages.com', 'www.buzzfile.com']
 
 #--------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ class Analysis:
 
 		#print domains
 		for text in aTags:
-			if text.has_attr('href'):
+			if text.has_attr('href') & ('.pdf' not in text.attrs['href']):
 				#print text.attrs['href']
 				if ('/url?q' in text.attrs['href']) & (c < 1):
 
@@ -49,6 +49,11 @@ class Analysis:
 					domain = domain[1]
 					domain = domain.split('/')
 					domain = domain[2]
+					#print domain
+
+					if domain in skipDomains:
+						#print domain 
+						c -= 1
 					
 		return domain
 
